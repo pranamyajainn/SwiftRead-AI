@@ -93,15 +93,24 @@ export default function WaitlistForm() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,
-                    email,
+                    name: name.trim(),
+                    email: email.trim(),
+                    honeypot, // Send to server for logging/verification
                     date: new Date().toISOString()
                 }),
             });
 
             if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || 'Something went wrong');
+                let errorMessage = 'Something went wrong';
+                try {
+                    const data = await response.json();
+                    errorMessage = data.error || errorMessage;
+                } catch (e) {
+                    // If response is not JSON (e.g. 500 server crash), read text or use default
+                    console.error('Failed to parse error response:', e);
+                    errorMessage = `Server Error (${response.status})`;
+                }
+                throw new Error(errorMessage);
             }
 
             setIsLoading(false);

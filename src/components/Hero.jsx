@@ -7,7 +7,7 @@ export default function Hero() {
     };
 
     return (
-        <section className="section" style={{ minHeight: '80vh', paddingTop: '7rem', paddingBottom: '4rem' }}>
+        <section className="section" style={{ paddingTop: '7rem', paddingBottom: '4rem' }}>
             <div className="container">
                 <div className="grid-2">
                     <div>

@@ -7,9 +7,17 @@ export default async function handler(request, response) {
         return response.status(405).json({ error: 'Method not allowed' });
     }
 
-    // SECURITY: Admin access is only allowed in local development
-    if (process.env.NODE_ENV !== 'development') {
-        return response.status(404).json({ error: 'Not found' });
+    // SECURITY: Admin access requires a password
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    const requestPassword = request.headers['x-admin-password'];
+
+    if (!adminPassword) {
+        console.error('ADMIN_PASSWORD environment variable not set');
+        return response.status(500).json({ error: 'Server configuration error' });
+    }
+
+    if (requestPassword !== adminPassword) {
+        return response.status(401).json({ error: 'Unauthorized' });
     }
 
     const url = new URL(process.env.POSTGRES_URL_NON_POOLING);
