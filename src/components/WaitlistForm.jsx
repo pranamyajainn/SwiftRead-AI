@@ -86,27 +86,37 @@ export default function WaitlistForm() {
 
         setIsLoading(true);
 
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 800));
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    date: new Date().toISOString()
+                }),
+            });
 
-        const existingData = JSON.parse(localStorage.getItem('waitlist_signups') || '[]');
-        const newEntry = {
-            id: Date.now(),
-            name,
-            email,
-            date: new Date().toISOString()
-        };
-        localStorage.setItem('waitlist_signups', JSON.stringify([...existingData, newEntry]));
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Something went wrong');
+            }
 
-        setIsLoading(false);
-        setSubmitted(true);
-        setLastSubmitted(now);
-        setSubmissionCount(prev => prev + 1);
-        triggerCelebration();
+            setIsLoading(false);
+            setSubmitted(true);
+            setLastSubmitted(now);
+            setSubmissionCount(prev => prev + 1);
+            triggerCelebration();
 
-        // Reset form data
-        setName('');
-        setEmail('');
+            // Reset form data
+            setName('');
+            setEmail('');
+        } catch (err) {
+            setIsLoading(false);
+            setError(err.message);
+        }
     };
 
     const BalloonLayer = () => {

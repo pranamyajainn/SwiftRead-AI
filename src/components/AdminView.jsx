@@ -3,23 +3,23 @@ import React, { useEffect, useState } from 'react';
 export default function AdminView() {
     const [signups, setSignups] = useState([]);
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState('');
-
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('waitlist_signups') || '[]');
-        // Sort by date descending
-        setSignups(data.sort((a, b) => new Date(b.date) - new Date(a.date)));
+        fetchSignups();
     }, []);
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        if (password === 'munnu123') {
-            setIsAuthenticated(true);
-        } else {
-            alert('Incorrect password');
+    const fetchSignups = async () => {
+        try {
+            const response = await fetch('/api/admin');
+            if (response.ok) {
+                const data = await response.json();
+                setSignups(data.signups);
+            }
+        } catch (error) {
+            console.error('Failed to fetch signups:', error);
         }
     };
+
+
 
     const downloadCSV = () => {
         const headers = ['Date', 'Name', 'Email'];
@@ -35,41 +35,9 @@ export default function AdminView() {
         link.click();
     };
 
-    const clearData = () => {
-        if (confirm('Are you sure you want to clear all signups?')) {
-            localStorage.removeItem('waitlist_signups');
-            setSignups([]);
-        }
-    };
 
-    if (!isAuthenticated) {
-        return (
-            <div className="container" style={{ paddingTop: '8rem', paddingBottom: '8rem', textAlign: 'center' }}>
-                <div className="card" style={{ maxWidth: '400px', margin: '0 auto' }}>
-                    <h2 style={{ marginBottom: '1.5rem' }}>Admin Access</h2>
-                    <form onSubmit={handleLogin}>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter password"
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                borderRadius: '0.5rem',
-                                border: '1px solid #e5e7eb',
-                                fontSize: '1rem',
-                                marginBottom: '1rem'
-                            }}
-                        />
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                            Login
-                        </button>
-                    </form>
-                </div>
-            </div>
-        );
-    }
+
+
 
     return (
         <div className="container" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
@@ -79,9 +47,7 @@ export default function AdminView() {
                     <button onClick={downloadCSV} className="btn btn-primary">
                         Download CSV
                     </button>
-                    <button onClick={clearData} className="btn" style={{ background: '#fee2e2', color: '#ef4444' }}>
-                        Clear Data
-                    </button>
+
                 </div>
             </div>
 

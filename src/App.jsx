@@ -134,7 +134,8 @@ function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  if (path === '/admin') {
+  // SECURITY: Admin route is only available in development
+  if (path === '/admin' && import.meta.env.DEV) {
     return <AdminView />;
   }
 

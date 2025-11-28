@@ -1,94 +1,86 @@
 # SwiftRead AI - Landing Page
 
-A high-performance, conversion-optimized landing page for the SwiftRead AI speed reading tool. Built with React, Vite, and Vanilla CSS, designed to capture early access signups with a premium, Ogilvy-inspired aesthetic.
+This is the public landing page and waitlist for **SwiftRead AI**, a tool designed to turn passive reading into active training using AI.
 
-## 🚀 Project Overview
+## Project Overview
 
-*   **Goal**: Drive waitlist signups for the upcoming AI reading engine.
-*   **Key Features**:
-    *   **AI-First Messaging**: "Read Like a Billionaire. 1000 Pages a Day."
-    *   **Waitlist System**: LocalStorage-based signup tracking with rate limiting and spam protection.
-    *   **Admin Dashboard**: Hidden view (`/admin`) to view and export signups.
-    *   **Celebration Effects**: Confetti and balloon animations on successful signup.
-    *   **Mobile Responsive**: Fully optimized for all device sizes.
+- **Frontend**: React + Vite
+- **Styling**: Vanilla CSS (responsive, modern design)
+- **Backend**: Vercel Serverless Functions (Node.js)
+- **Database**: Postgres (via Vercel/Supabase)
 
-## 🛠 Quickstart Guide
+## Features
+
+- **Waitlist Form**: Captures user name and email.
+- **Responsive Design**: Works seamlessly on mobile and desktop.
+- **Animations**: Subtle micro-animations and confetti celebration on signup.
+- **Admin Dashboard**: (Development only) View and export signups.
+
+## Getting Started
 
 ### Prerequisites
-*   Node.js (v16+)
-*   npm (v7+)
+
+- Node.js (v18+)
+- npm
 
 ### Installation
-```bash
-# Clone the repository
-git clone <repo-url>
 
-# Install dependencies
-npm install
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/swift-read-ai.git
+    cd swift-read-ai
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### Environment Variables
+
+To run the project locally with full functionality (including the database), you need to set up a `.env.local` file in the root directory.
+
+Required variable:
+```env
+POSTGRES_URL_NON_POOLING=postgres://user:password@host:port/database
 ```
+*Note: This project uses the `pg` client with SSL enabled (`rejectUnauthorized: false`) to connect to Postgres instances.*
 
-### Development
+### Running Locally
+
+Start the development server:
+
 ```bash
-# Start the local development server
 npm run dev
 ```
-Access the app at `http://localhost:5173`.
 
-### Build for Production
+- **Landing Page**: `http://localhost:5173`
+- **Admin Dashboard**: `http://localhost:5173/admin` (Only available in development mode)
+
+### Building for Production
+
+To create a production build:
+
 ```bash
-# Create a production build
 npm run build
 ```
-The output will be in the `dist` directory.
 
-## 🔐 Admin Access
+This will generate the `dist` folder. Note that the `/admin` route is **disabled** in production builds for security.
 
-To view the waitlist signups:
-1.  Navigate to `/admin` (e.g., `https://your-site.com/admin`).
-2.  Enter the password: **`munnu123`**
-3.  From the dashboard, you can view the list or download a CSV.
+## Deployment
 
-## 📂 File Structure
+This project is optimized for deployment on **Vercel**.
 
-```
-src/
-├── assets/          # Images and icons
-├── components/      # React components
-│   ├── Hero.jsx     # Main landing section
-│   ├── WaitlistForm.jsx # Signup form with logic
-│   ├── AdminView.jsx    # Hidden dashboard
-│   └── ...
-├── App.jsx          # Main layout and routing
-├── index.css        # Global styles and variables
-└── main.jsx         # Entry point
-```
+1.  Push your code to a GitHub repository.
+2.  Import the project into Vercel.
+3.  Add the `POSTGRES_URL_NON_POOLING` environment variable in the Vercel project settings.
+4.  Deploy!
 
-## 🌍 Deployment
+## Security
 
-### Netlify / Vercel (Recommended)
-1.  Connect your GitHub repository.
-2.  Set the build command to `npm run build`.
-3.  Set the publish directory to `dist`.
-4.  **Important**: Ensure your host redirects all 404s to `index.html` to support the `/admin` route (SPA routing).
+- **No Secrets**: This repository contains no API keys or passwords.
+- **Admin Access**: The admin dashboard and API endpoints are restricted to the `development` environment. They are not accessible in the production deployment.
 
-### GitHub Pages
-1.  Update `vite.config.js` to set `base: '/<repo-name>/'`.
-2.  Deploy the `dist` folder.
-3.  Note: The `/admin` route might require a hash router or `404.html` hack on GitHub Pages.
+## License
 
-## 📱 Mobile & Performance
-
-*   **Responsiveness**: Tested on devices down to 320px width.
-*   **Animations**: Celebration effects use `canvas-confetti` and CSS animations, optimized to degrade gracefully.
-*   **Performance**: Zero blocking scripts, lazy-loaded assets where possible.
-
-## ⚠️ Known Limitations
-
-*   **Data Persistence**: Signups are currently stored in the browser's `localStorage`. This is a demo/MVP feature. For a real launch, connect `WaitlistForm.jsx` to a backend API (e.g., Supabase, Firebase).
-*   **Legal Links**: The Privacy Policy and Terms links in the footer are placeholders (`#`).
-
-## 🤝 Contribution
-
-1.  Fork the repo.
-2.  Create a feature branch.
-3.  Submit a Pull Request.
+© 2025 SwiftRead AI. All rights reserved.
