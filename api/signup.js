@@ -117,7 +117,7 @@ export default async function handler(request, response) {
     if (client) await client.end();
 
     if (error.code === '23505') { // Unique violation
-      console.log(`[INFO] Duplicate signup attempt for email: ${request.body.email}`);
+      console.log('[INFO] Duplicate signup attempt');
       // Return success to prevent user enumeration
       return response.status(200).json({ message: 'Signup successful' });
     }

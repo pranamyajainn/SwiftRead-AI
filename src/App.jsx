@@ -12,6 +12,29 @@ import diamondImg from './assets/diamond.png';
 import Logo from './components/Logo';
 
 function LandingPage() {
+  useEffect(() => {
+    // Default Metadata (Fixes leakage from SEO pages)
+    document.title = "SwiftRead AI – Read Like a Billionaire | Waitlist";
+
+    // Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = "description";
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Join the SwiftRead AI waitlist and train your brain to read 3x faster with an AI-powered speed reading coach.";
+
+    // Canonical
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = "https://waitlist.namyah.com/";
+  }, []);
+
   return (
     <div>
       <nav style={{ padding: '1.5rem 0', position: 'absolute', width: '100%', top: 0, zIndex: 10 }}>
